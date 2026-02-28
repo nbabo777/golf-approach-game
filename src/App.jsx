@@ -96,7 +96,7 @@ function App() {
 
     // Get dynamic header title
     const getHeaderTitle = () => {
-        if (currentTab === 'home') return 'ホーム';
+        if (currentTab === 'home') return 'アプローチ記録';
         if (currentTab === 'game') return '対決中';
         if (currentTab === 'result') return '結果';
         if (currentTab === 'history') return '履歴';
