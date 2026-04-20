@@ -9,12 +9,12 @@ const GameResult = ({ game, onBackHome }) => {
     // Sort players by total points
     const sortedPlayers = [...game.players].sort((a, b) => b.points - a.points);
 
-    // Format data for the chart (Per-round Points)
+    // Format data for the chart (Per-round Remaining Yards)
     const chartData = useMemo(() => {
         return game.stages.map((stage, index) => {
             const dataPoint = { name: `R${index + 1}` };
             stage.results.forEach(r => {
-                dataPoint[r.playerId] = r.points;
+                dataPoint[r.playerId] = r.remainderYard;
             });
             return dataPoint;
         });
@@ -57,17 +57,18 @@ const GameResult = ({ game, onBackHome }) => {
                 ))}
             </div>
 
-            <div className="ios-subtitle" style={{ marginTop: '24px' }}>ラウンド別 獲得ポイント推移</div>
+            <div className="ios-subtitle" style={{ marginTop: '24px' }}>ラウンド別 残りヤード数推移</div>
             <div className="ios-card" style={{ padding: '16px 8px 16px 0' }}>
                 <div style={{ width: '100%', height: 300 }}>
                     <ResponsiveContainer>
                         <LineChart data={chartData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
                             <CartesianGrid strokeDasharray="3 3" stroke="var(--ios-border)" vertical={false} />
                             <XAxis dataKey="name" stroke="var(--ios-gray)" fontSize={12} tickLine={false} axisLine={false} />
-                            <YAxis allowDecimals={false} stroke="var(--ios-gray)" fontSize={12} tickLine={false} axisLine={false} width={30} />
+                            <YAxis allowDecimals={true} stroke="var(--ios-gray)" fontSize={12} tickLine={false} axisLine={false} width={30} reversed={true} />
                             <Tooltip
                                 contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
                                 labelStyle={{ fontWeight: 'bold', color: '#000' }}
+                                formatter={(value) => [value != null ? `${value} yd` : '不参加', '残りヤード']}
                             />
                             <Legend iconType="circle" wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
 
