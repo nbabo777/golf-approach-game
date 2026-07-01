@@ -24,7 +24,7 @@ const GameResult = ({ game, onBackHome }) => {
         <div className="fade-in">
             <div style={{ textAlign: 'center', marginBottom: '24px' }}>
                 <Trophy size={48} color="#FFD700" style={{ marginBottom: '8px' }} />
-                <h2 className="ios-title" style={{ marginBottom: '4px' }}>最終結果</h2>
+                <h2 className="ios-title" style={{ marginBottom: '4px' }}>最終結果!</h2>
                 <div style={{ color: 'var(--ios-gray)', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
                     <Calendar size={14} />
                     {new Date(game.date).toLocaleDateString('ja-JP')}
