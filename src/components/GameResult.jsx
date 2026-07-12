@@ -6,8 +6,22 @@ import { Trophy, Home, Calendar } from 'lucide-react';
 const COLORS = ['#007AFF', '#34C759', '#FF3B30', '#FF9500', '#5856D6', '#FF2D55'];
 
 const GameResult = ({ game, onBackHome }) => {
-    // Sort players by total points
-    const sortedPlayers = [...game.players].sort((a, b) => b.points - a.points);
+    // 各プレイヤーの平均残りヤード数を計算（不参加ラウンドは除外）
+    const playerAvgYards = useMemo(() => {
+        return game.players.map(player => {
+            const yards = game.stages
+                .flatMap(stage => stage.results)
+                .filter(r => r.playerId === player.id && r.remainderYard !== null)
+                .map(r => r.remainderYard);
+            const avg = yards.length > 0
+                ? yards.reduce((sum, y) => sum + y, 0) / yards.length
+                : null;
+            return { ...player, avgYard: avg };
+        });
+    }, [game]);
+
+    // 最終順位は仕様どおり合計ポイントで決定する。
+    const sortedPlayers = [...playerAvgYards].sort((a, b) => b.points - a.points);
 
     // Format data for the chart (Per-round Remaining Yards)
     const chartData = useMemo(() => {
@@ -31,7 +45,7 @@ const GameResult = ({ game, onBackHome }) => {
                 </div>
             </div>
 
-            <div className="ios-subtitle">最終順位</div>
+            <div className="ios-subtitle">最終順位（合計ポイント）</div>
             <div className="ios-list">
                 {sortedPlayers.map((player, index) => (
                     <div key={player.id} className="ios-list-item" style={{
@@ -50,8 +64,13 @@ const GameResult = ({ game, onBackHome }) => {
                                 {player.name}
                             </span>
                         </div>
-                        <div style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                            {player.points}<span style={{ fontSize: '12px', color: 'var(--ios-gray)', marginLeft: '4px', fontWeight: 'normal' }}>pt</span>
+                        <div style={{ textAlign: 'right' }}>
+                            <div style={{ fontSize: '18px', fontWeight: 'bold' }}>
+                                {player.points}<span style={{ fontSize: '12px', color: 'var(--ios-gray)', marginLeft: '4px', fontWeight: 'normal' }}>pt</span>
+                            </div>
+                            <div style={{ fontSize: '12px', color: 'var(--ios-gray)', marginTop: '2px' }}>
+                                平均残り {player.avgYard !== null ? `${player.avgYard.toFixed(1)}yd` : '－'}
+                            </div>
                         </div>
                     </div>
                 ))}

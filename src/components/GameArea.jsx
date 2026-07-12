@@ -77,7 +77,7 @@ const GameArea = ({ game, setGame, onFinish }) => {
         // Update game state
         const newStage = {
             id: uuidv4(),
-            targetYard: targetYardsNum,
+            targetYard: targetYard,
             results: stageResults
         };
 

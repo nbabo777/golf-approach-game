@@ -10,20 +10,16 @@ import PlayerHistory from './components/PlayerHistory';
 function App() {
     const [currentTab, setCurrentTab] = useState('home');
     const [activeGame, setActiveGame] = useState(null);
-    const [historyItems, setHistoryItems] = useState([]);
-    const [selectedPlayerForHistory, setSelectedPlayerForHistory] = useState(null);
-
-    // Load history from localStorage on first render
-    useEffect(() => {
-        const saved = localStorage.getItem('golfGameHistory');
-        if (saved) {
-            try {
-                setHistoryItems(JSON.parse(saved));
-            } catch (e) {
-                console.error("Failed to parse game history", e);
-            }
+    const [historyItems, setHistoryItems] = useState(() => {
+        try {
+            const saved = localStorage.getItem('golfGameHistory');
+            return saved ? JSON.parse(saved) : [];
+        } catch (e) {
+            console.error('Failed to load game history', e);
+            return [];
         }
-    }, []);
+    });
+    const [selectedPlayerForHistory, setSelectedPlayerForHistory] = useState(null);
 
     // Save history to localStorage whenever it changes
     useEffect(() => {
