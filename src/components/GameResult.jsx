@@ -83,7 +83,7 @@ const GameResult = ({ game, onBackHome }) => {
                         <LineChart data={chartData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
                             <CartesianGrid strokeDasharray="3 3" stroke="var(--ios-border)" vertical={false} />
                             <XAxis dataKey="name" stroke="var(--ios-gray)" fontSize={12} tickLine={false} axisLine={false} />
-                            <YAxis allowDecimals={true} stroke="var(--ios-gray)" fontSize={12} tickLine={false} axisLine={false} width={30} reversed={true} />
+                            <YAxis allowDecimals={true} stroke="var(--ios-gray)" fontSize={12} tickLine={false} axisLine={false} width={30} />
                             <Tooltip
                                 contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
                                 labelStyle={{ fontWeight: 'bold', color: '#000' }}
